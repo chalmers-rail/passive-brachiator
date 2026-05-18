@@ -1,27 +1,23 @@
 # Passive Brachiator: Underactuated Inverted-Compass Locomotion
 
-<p align="center">
-  <img src="results/brachiator.gif" width="80%">
-</p>
-
-<p align="center">
-    <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python Version">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
-</p>
-
 ---
 
 ## 🧐 About the Project
 The **Passive Brachiator** is an open-source simulation environment and physics engine for studying **Underactuated Brachiation**. Inspired by the McGeer Passive Dynamic Walker, this project implements an "Inverted Compass" model that swings across a ceiling using nothing but gravity and inertia.
 
 <p align="center">
-  <img src="passive_brachiator_hero.png" width="100%">
+  <img src="results/brachiator.gif" width="80%">
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python Version">
+    <img src="https://img.shields.io/badge/license-BSD%203--Clause-blue.svg" alt="License">
 </p>
 
 ### 🗝️ Key Characteristics
 - **Purely Underactuated**: Zero motor torque; locomotion is a natural results of the system's orbital stability.
 - **Limit-Cycle Gaits**: Discovery of stable "fixed points" where energy lost at impact equals energy gained from the slope.
-- **Numerical Robustness**: Implementation of momentum-conserving grab transitions for stable stride sequences.
+- **Numerical Robustness**: Implementation of impact map transitions for stable stride sequences.
 
 ---
 
@@ -89,7 +85,20 @@ Following a recent refactoring, the project uses a flat, high-performance root s
 ---
 
 ## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the BSD 3-Clause License - see the [LICENSE](LICENSE) file for details.
 
 ## 📄 Citation
 
+If you use this work, please cite:
+
+```bibtex
+@InProceedings{2026isrm_passivebrachiator,
+  author    = {{\bf Kumar, Shivesh} and Karthikeyan, Nandhith and Varma, Vegesna Siddhartha and Yang, Xiao and Piiroinen, Petri T. and Chittawadigi, Rajeevlochana},
+  title     = "{An Inverted Compass Model for Passive Dynamic Brachiation}",
+  booktitle = "Robotics and Mechatronics",
+  year      = "2026",
+  publisher = "Springer International Publishing",
+  address   = "Cham",
+  note      = "accepted"
+}
+```
