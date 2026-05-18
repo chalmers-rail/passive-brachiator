@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Generated output
+figures/
+*.pdf
+*.csv
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Jupyter
+**/.ipynb_checkpoints
