@@ -1,7 +1,5 @@
 # Passive Brachiator: Underactuated Inverted-Compass Locomotion
 
----
-
 ## 🧐 About the Project
 The **Passive Brachiator** is an open-source simulation environment and physics engine for studying **Underactuated Brachiation**. Inspired by the McGeer Passive Dynamic Walker, this project implements an "Inverted Compass" model that swings across a ceiling using nothing but gravity and inertia.
 
