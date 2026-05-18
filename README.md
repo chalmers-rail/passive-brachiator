@@ -1,13 +1,12 @@
 # Passive Brachiator: Underactuated Inverted-Compass Locomotion
 
 <p align="center">
-  <img src="brachiator.gif" width="80%">
+  <img src="results/brachiator.gif" width="80%">
 </p>
 
 <p align="center">
     <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python Version">
     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
-    <img src="https://img.shields.io/badge/physics-Lagrangian-orange.svg" alt="Physics">
 </p>
 
 ---

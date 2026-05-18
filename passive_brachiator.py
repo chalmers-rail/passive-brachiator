@@ -1,3 +1,4 @@
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -22,7 +23,7 @@ m0 = m2
 phi = np.radians(phi_deg)
 dt = 0.01
 t_max = 20.0
-N_SWINGS = 20 # Standard swings to show convergence
+N_SWINGS = 5 # Standard swings to show convergence
 
 # Workspace root for relative paths
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -176,6 +177,7 @@ if save_choice == 'y':
 # 4. ANIMATION PROMPT
 # ==========================================================
 choice = input("\nSimulation complete. View animation? (y/n): ").lower()
+
 if choice == 'y':
     print("Launching animation...")
     plt.style.use('dark_background'); fig, ax = plt.subplots(figsize=(15, 7))
@@ -184,17 +186,50 @@ if choice == 'y':
     ax.set_aspect('equal'); ax.grid(alpha=0.1)
     cx = np.array([all_x.min()-1, all_x.max()+1])
     ax.plot(cx, -cx * np.tan(phi), '--', color='#556677', lw=1.5)
-    
+
     rods = [ax.plot([], [], '-', color='red', lw=4, solid_capstyle='round')[0] for _ in range(2)]
-    joint, tip = ax.plot([], [], 'o', color='white', ms=8)[0], ax.plot([], [], 'o', color='white', ms=5)[0]
-    
+    pivot_dot = ax.plot([], [], 'o', color='white', ms=5)[0]
+    joint = ax.plot([], [], 'o', color='white', ms=8)[0]
+    tip = ax.plot([], [], 'o', color='white', ms=5)[0]
+
     def update(i):
         f = frames[min(i, len(frames)-1)]
         p_p, p_j, p_t, swing_idx = f[0:2], f[2:4], f[4:6], int(f[8])
         c1, c2 = ('red', 'deepskyblue') if swing_idx % 2 == 0 else ('deepskyblue', 'red')
         rods[0].set_data([p_p[0], p_j[0]], [p_p[1], p_j[1]]); rods[0].set_color(c1)
         rods[1].set_data([p_j[0], p_t[0]], [p_j[1], p_t[1]]); rods[1].set_color(c2)
+        pivot_dot.set_data([p_p[0]], [p_p[1]])
         joint.set_data([p_j[0]], [p_j[1]]); tip.set_data([p_t[0]], [p_t[1]])
-        return rods + [joint, tip]
+        return rods + [pivot_dot, joint, tip]
 
-    ani = animation.FuncAnimation(fig, update, frames=len(frames)+100, interval=15, blit=True); plt.show()
+    live_fps = round(1 / dt)
+    gif_fps = 50  # GIF renderers clamp frame delay to ~20ms (50fps max)
+    gif_step = max(1, round(live_fps / gif_fps))
+
+    plt.ion()
+    plt.show()
+    for i in range(len(frames)):
+        if not plt.fignum_exists(fig.number):
+            break
+        t0 = time.perf_counter()
+        update(i)
+        fig.canvas.draw()
+        elapsed = time.perf_counter() - t0
+        plt.pause(max(0.001, dt - elapsed))
+    plt.ioff()
+
+    save_choice = input("Save animation to file? (gif/mp4/n): ").lower()
+    if save_choice in ('gif', 'mp4'):
+        ani = animation.FuncAnimation(fig, update, frames=len(frames), interval=dt*1000, blit=False)
+        if save_choice == 'gif':
+            out_path = os.path.join(ROOT_DIR, "brachiator.gif")
+            print(f"Saving GIF to {out_path} (this may take a moment)...")
+            gif_frames = range(0, len(frames), gif_step)
+            ani_gif = animation.FuncAnimation(fig, update, frames=gif_frames, interval=dt*1000, blit=False)
+            ani_gif.save(out_path, writer=animation.PillowWriter(fps=gif_fps))
+            print("Saved.")
+        elif save_choice == 'mp4':
+            out_path = os.path.join(ROOT_DIR, "brachiator.mp4")
+            print(f"Saving MP4 to {out_path} (this may take a moment)...")
+            ani.save(out_path, writer=animation.FFMpegWriter(fps=live_fps))
+            print("Saved.")
